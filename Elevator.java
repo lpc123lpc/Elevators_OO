@@ -1,6 +1,4 @@
 import com.oocourse.TimableOutput;
-
-import java.util.Collection;
 import java.util.HashSet;
 
 public class Elevator extends Thread {
@@ -11,7 +9,7 @@ public class Elevator extends Thread {
     private int direction;
     private int arriveTime;
     private int maxMember;
-    private HashSet<Integer> Inout = new HashSet<>();
+    private HashSet<Integer> inout = new HashSet<>();
     private Elevators elevators;
 
     Elevator(Floors floors,String type,String name,Elevators elevators) {
@@ -64,27 +62,33 @@ public class Elevator extends Thread {
                         TimableOutput.println(String.format("ARRIVE-%d-%s",
                                 trueFloor(nowFloor),name));
                     }
-                    if (Inout.contains(nowFloor)){
+                    if (inout.contains(nowFloor)) {
                         TimableOutput.println(String.format("OPEN-%d-%s",
                                 trueFloor(nowFloor),name));
                         inCloseSleep();
-                        in.addPerson(floors.getPerson(nowFloor,maxMember,Inout),trueFloor(nowFloor),name);
+                        in.addPerson(floors.getPerson(nowFloor,maxMember, inout),
+                                trueFloor(nowFloor),name);
                         inCloseSleep();
-                        TimableOutput.println(String.format("CLOSE-%d-%s",trueFloor(nowFloor),name));
+                        TimableOutput.println(String.format("CLOSE-%d-%s",
+                                trueFloor(nowFloor),name));
                     }
                 }
                 while (!in.isEmpty()) {
-                    if (Inout.contains(nowFloor)) {
-                        if (in.ifStop(nowFloor,Inout) || floors.ifStop(nowFloor, direction)) {
-                            TimableOutput.println(String.format("OPEN-%d-%s", trueFloor(nowFloor), name));
+                    if (inout.contains(nowFloor)) {
+                        if (in.ifStop(nowFloor, inout) ||
+                                floors.ifStop(nowFloor, direction)) {
+                            TimableOutput.println(String.format("OPEN-%d-%s",
+                                    trueFloor(nowFloor), name));
                             inCloseSleep();
-                            if (in.ifStop(nowFloor,Inout)) {
-                                in.getOut(nowFloor, name,Inout);
+                            if (in.ifStop(nowFloor, inout)) {
+                                in.getOut(nowFloor, name, inout);
                             }
                             if (in.isEmpty() && !floors.isThisEmpty(nowFloor)) {
-                                in.addPerson(floors.getPerson(nowFloor, maxMember,Inout), trueFloor(nowFloor), name);
+                                in.addPerson(floors.getPerson(nowFloor, maxMember, inout),
+                                        trueFloor(nowFloor), name);
                             } else if (floors.ifStop(nowFloor, direction) && in.getNum() < 7) {
-                                in.addPerson(floors.inPass(nowFloor, direction, maxMember - in.getNum(),Inout)
+                                in.addPerson(floors.inPass(nowFloor, direction,
+                                        maxMember - in.getNum(), inout)
                                         , trueFloor(nowFloor), name);
                             }
                             inCloseSleep();
@@ -134,46 +138,46 @@ public class Elevator extends Thread {
     }
 
     private void ASet() {
-        Inout.add(1);
-        Inout.add(2);
-        Inout.add(3);
-        Inout.add(4);
-        Inout.add(18);
-        Inout.add(19);
-        Inout.add(20);
-        Inout.add(21);
-        Inout.add(22);
-        Inout.add(23);
+        inout.add(1);
+        inout.add(2);
+        inout.add(3);
+        inout.add(4);
+        inout.add(18);
+        inout.add(19);
+        inout.add(20);
+        inout.add(21);
+        inout.add(22);
+        inout.add(23);
     }
 
     private void BSet() {
-        Inout.add(2);
-        Inout.add(3);
-        Inout.add(4);
-        Inout.add(5);
-        Inout.add(7);
-        Inout.add(8);
-        Inout.add(9);
-        Inout.add(10);
-        Inout.add(11);
-        Inout.add(12);
-        Inout.add(13);
-        Inout.add(14);
-        Inout.add(15);
-        Inout.add(16);
-        Inout.add(17);
-        Inout.add(18);
+        inout.add(2);
+        inout.add(3);
+        inout.add(4);
+        inout.add(5);
+        inout.add(7);
+        inout.add(8);
+        inout.add(9);
+        inout.add(10);
+        inout.add(11);
+        inout.add(12);
+        inout.add(13);
+        inout.add(14);
+        inout.add(15);
+        inout.add(16);
+        inout.add(17);
+        inout.add(18);
     }
 
     private void CSet() {
-        Inout.add(4);
-        Inout.add(6);
-        Inout.add(8);
-        Inout.add(10);
-        Inout.add(12);
-        Inout.add(14);
-        Inout.add(16);
-        Inout.add(18);
+        inout.add(4);
+        inout.add(6);
+        inout.add(8);
+        inout.add(10);
+        inout.add(12);
+        inout.add(14);
+        inout.add(16);
+        inout.add(18);
     }
 
     private boolean ifStop() {
@@ -183,7 +187,9 @@ public class Elevator extends Thread {
         else if (floors.isEmpty()) {
             return true;
         }
-        else return  !floors.ifGo(Inout) && !floors.CanWait(Inout);
+        else {
+            return  !floors.ifGo(inout) && !floors.CanWait(inout);
+        }
     }
 
     public boolean isEmpty() {
@@ -192,8 +198,9 @@ public class Elevator extends Thread {
 
     public void ifWait() {
         //System.out.println((!floors.isEmpty() && !floors.ifGo(Inout)));
-        while ((!floors.isEmpty() && !floors.ifGo(Inout)) || !elevators.isEmpty() ||(floors.isEmpty() && floors.getEmpty() == 0)) {
-            synchronized (floors){
+        while ((!floors.isEmpty() && !floors.ifGo(inout)) ||
+                !elevators.isEmpty() || (floors.isEmpty() && floors.getEmpty() == 0)) {
+            synchronized (floors) {
                 try {
                     //System.out.println(Thread.currentThread() + "wait"+name);
                     floors.wait();

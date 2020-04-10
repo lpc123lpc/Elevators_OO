@@ -39,6 +39,8 @@ public class Person {
 
     public void setFromFloor(int fromFloor) {
         this.fromFloor = fromFloor;
+        direction = Direction();
+        
     }
 
     public int getDirection() {

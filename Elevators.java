@@ -7,8 +7,8 @@ public class Elevators {
 
     Elevators(Floors floors) {
         for (int i = 0;i < 3;i++) {
-            elevators.add(new Elevator(floors,String.valueOf((char)('A'+i)),
-                    String.valueOf((char)('A'+i)),this));
+            elevators.add(new Elevator(floors,String.valueOf((char)('A' + i)),
+                    String.valueOf((char)('A' + i)),this));
         }
     }
 
