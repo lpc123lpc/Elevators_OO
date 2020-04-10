@@ -42,6 +42,7 @@ public class Elevator extends Thread {
         TimableOutput.initStartTimestamp();
 
         while (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
+            //System.out.println(ifStop()+name);
             if (ifStop()) {
                 break;
             }
@@ -90,6 +91,7 @@ public class Elevator extends Thread {
         synchronized (floors) {
             floors.notifyAll();
         }
+        //System.out.println("Elevator" + name + "over");
     }
 
     private void arriveSleep() {
@@ -165,10 +167,11 @@ public class Elevator extends Thread {
             direction = floors.firstDir(nowFloor,inout);
         }
         while (floors.NotStop(nowFloor,inout) && !floors.isEmpty()) {
+            //System.out.println(ifStop()+name);
             if (ifStop()) {
                 break;
             }
-            ifWait();
+            //ifWait();
             direction = floors.changeDir(direction,nowFloor,inout);
             arriveSleep();
             nowFloor = nowFloor + direction;
@@ -188,13 +191,16 @@ public class Elevator extends Thread {
     }
 
     private boolean ifStop() {
+
         if (!elevators.isEmpty() || floors.getEmpty() == 0) {
+            //System.out.println(1);
             return false;
         }
         else if (floors.isEmpty()) {
             return true;
         }
         else {
+            //System.out.println("2" + floors.isEmpty());
             return  !floors.ifGo(inout) && !floors.CanWait(inout);
         }
     }
@@ -204,13 +210,13 @@ public class Elevator extends Thread {
     }
 
     public void ifWait() {
-        //System.out.println((!floors.isEmpty() && !floors.ifGo(Inout)));
         while ((!floors.isEmpty() && !floors.ifGo(inout)) ||
                 !elevators.isEmpty() || (floors.isEmpty() && floors.getEmpty() == 0)) {
             synchronized (floors) {
                 try {
                     //System.out.println(Thread.currentThread() + "wait"+name);
                     floors.wait();
+                    //System.out.println(Thread.currentThread() + "notify"+name);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -221,7 +227,7 @@ public class Elevator extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        //System.out.println(Thread.currentThread() + "notify"+name);
+
     }
 
 }
