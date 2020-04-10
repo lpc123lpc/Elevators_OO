@@ -34,7 +34,7 @@ public class Inside {
         return insidePeople.size() == 0;
     }
 
-    public void getOut(int nowFloor,String name,HashSet<Integer> Inout) {
+    public void getOut(int nowFloor,String name,HashSet<Integer> inout) {
         ArrayList<Person> out = new ArrayList<>();
         for (Person person : insidePeople) {
             if (person.getToFloor() == nowFloor) {
@@ -46,17 +46,17 @@ public class Inside {
         }
         insidePeople.removeAll(out);
         if (nowFloor == 4 || nowFloor == 18) {
-            changeEle(Inout,nowFloor,name);
+            changeEle(inout,nowFloor,name);
         }
     }
 
-    public boolean ifStop(int nowFloor,HashSet<Integer> Inout) {
+    public boolean ifStop(int nowFloor,HashSet<Integer> inout) {
         for (Person person : insidePeople) {
             if (person.getToFloor() == nowFloor) {
                 return true;
             }
             if (nowFloor == 4 || nowFloor == 18) {
-                if (!Inout.contains(person.getToFloor())){
+                if (!inout.contains(person.getToFloor())) {
                     return true;
                 }
             }
@@ -77,10 +77,10 @@ public class Inside {
         return num;
     }
 
-    public void changeEle(HashSet<Integer> Inout,int nowFloor,String name) {
+    public void changeEle(HashSet<Integer> inout,int nowFloor,String name) {
         ArrayList<Person> out = new ArrayList<>();
         for (Person person :insidePeople) {
-            if (!Inout.contains(person.getToFloor())) {
+            if (!inout.contains(person.getToFloor())) {
                 person.setFromFloor(nowFloor);
                 out.add(person);
             }

@@ -41,7 +41,7 @@ public class Elevator extends Thread {
     public void run() {
         TimableOutput.initStartTimestamp();
 
-        while (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty())  {
+        while (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
             if (ifStop()) {
                 break;
             }

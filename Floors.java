@@ -147,7 +147,7 @@ public class Floors {
         return false;
     }
 
-    public boolean NotStop(int nowFloor,HashSet<Integer> inout) {
+    public synchronized boolean NotStop(int nowFloor,HashSet<Integer> inout) {
         if (isThisEmpty(nowFloor) || !inout.contains(nowFloor)) {
             return true;
         }
@@ -159,7 +159,7 @@ public class Floors {
         }
     }
 
-    public int changeDir(int direction,int nowFloor,HashSet<Integer> inout) {
+    public synchronized int changeDir(int direction,int nowFloor,HashSet<Integer> inout) {
         if (direction == 1) {
             if (nowFloor < getHighPer(inout)) {
                 return 1;
