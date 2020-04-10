@@ -160,17 +160,27 @@ public class Floors {
     }
 
     public synchronized int changeDir(int direction,int nowFloor,HashSet<Integer> inout) {
-        if (direction == 1) {
-            if (nowFloor < getHighPer(inout)) {
+        if (nowFloor == 1 || nowFloor == 23) {
+            if (nowFloor == 1) {
                 return 1;
-            } else {
+            }
+            else {
                 return -1;
             }
-        } else {
-            if (nowFloor > getLowPer(inout)) {
-                return -1;
+        }
+        else {
+            if (direction == 1) {
+                if (nowFloor < getHighPer(inout)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             } else {
-                return 1;
+                if (nowFloor > getLowPer(inout)) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             }
         }
     }

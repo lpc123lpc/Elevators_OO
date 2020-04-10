@@ -173,8 +173,10 @@ public class Elevator extends Thread {
             }
             //ifWait();
             direction = floors.changeDir(direction,nowFloor,inout);
+
             arriveSleep();
             nowFloor = nowFloor + direction;
+            //System.out.println(nowFloor);
             TimableOutput.println(String.format("ARRIVE-%d-%s",
                     trueFloor(nowFloor),name));
         }
