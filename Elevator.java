@@ -52,26 +52,7 @@ public class Elevator extends Thread {
                     break;
                 }
                 if (in.isEmpty()) {
-                    /*if (floors.isThisEmpty(nowFloor)) {
-                       direction = floors.changeDir(direction,nowFloor);
-                    }*/
-                    while (floors.isThisEmpty(nowFloor) && !floors.isEmpty()) {
-                        direction = floors.changeDir(direction,nowFloor);
-                        arriveSleep();
-                        nowFloor = nowFloor + direction;
-                        TimableOutput.println(String.format("ARRIVE-%d-%s",
-                                trueFloor(nowFloor),name));
-                    }
-                    if (inout.contains(nowFloor)) {
-                        TimableOutput.println(String.format("OPEN-%d-%s",
-                                trueFloor(nowFloor),name));
-                        inCloseSleep();
-                        in.addPerson(floors.getPerson(nowFloor,maxMember, inout),
-                                trueFloor(nowFloor),name);
-                        inCloseSleep();
-                        TimableOutput.println(String.format("CLOSE-%d-%s",
-                                trueFloor(nowFloor),name));
-                    }
+                    InEmpty();
                 }
                 while (!in.isEmpty()) {
                     if (inout.contains(nowFloor)) {
@@ -96,7 +77,6 @@ public class Elevator extends Thread {
                                     trueFloor(nowFloor), name));
                         }
                     }
-
                     if (!in.isEmpty()) {
                         direction = in.getDirection();
                         arriveSleep();
@@ -178,6 +158,33 @@ public class Elevator extends Thread {
         inout.add(14);
         inout.add(16);
         inout.add(18);
+    }
+
+    private void InEmpty() {
+        if (floors.NotStop(nowFloor,inout) && !floors.isEmpty()) {
+            direction = floors.firstDir(nowFloor,inout);
+        }
+        while (floors.NotStop(nowFloor,inout) && !floors.isEmpty()) {
+            if (ifStop()) {
+                break;
+            }
+            ifWait();
+            direction = floors.changeDir(direction,nowFloor,inout);
+            arriveSleep();
+            nowFloor = nowFloor + direction;
+            TimableOutput.println(String.format("ARRIVE-%d-%s",
+                    trueFloor(nowFloor),name));
+        }
+        if (inout.contains(nowFloor)) {
+            TimableOutput.println(String.format("OPEN-%d-%s",
+                    trueFloor(nowFloor),name));
+            inCloseSleep();
+            in.addPerson(floors.getPerson(nowFloor,maxMember, inout),
+                    trueFloor(nowFloor),name);
+            inCloseSleep();
+            TimableOutput.println(String.format("CLOSE-%d-%s",
+                    trueFloor(nowFloor),name));
+        }
     }
 
     private boolean ifStop() {

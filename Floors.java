@@ -32,19 +32,19 @@ public class Floors {
         return flag != 1;
     }
 
-    public synchronized ArrayList<Person> getPerson(int nowFloor,int num,HashSet<Integer> Inout) {
+    public synchronized ArrayList<Person> getPerson(int nowFloor,int num,HashSet<Integer> inout) {
         if (floors.get(nowFloor - 1).isEmpty()) {
             return null;
         }
         else {
-            return floors.get(nowFloor - 1).getPeople(nowFloor,num,Inout);
+            return floors.get(nowFloor - 1).getPeople(nowFloor,num,inout);
         }
     }
 
-    public synchronized int getHighPer() {
+    public synchronized int getHighPer(HashSet<Integer> inout) {
         int high = 1;
         for (Floor floor : floors) {
-            if (!floor.isEmpty()) {
+            if (!floor.isEmpty() && inout.contains(floors.indexOf(floor) + 1)) {
                 high = floors.indexOf(floor) + 1;
             }
         }
@@ -52,10 +52,10 @@ public class Floors {
         return high;
     }
 
-    public synchronized int getLowPer() {
-        int low = 15;
+    public synchronized int getLowPer(HashSet<Integer> inout) {
+        int low = 23;
         for (Floor floor :floors) {
-            if (!floor.isEmpty()) {
+            if (!floor.isEmpty() && inout.contains(floors.indexOf(floor) + 1)) {
                 return floors.indexOf(floor) + 1;
             }
         }
@@ -63,8 +63,8 @@ public class Floors {
         return low;
     }
 
-    public synchronized int changeDir(int direction,int nowFloor) {
-        if (direction == 1) {
+    public synchronized int firstDir(int nowFloor,HashSet<Integer> inout) {
+        /*if (direction == 1) {
             if (nowFloor < getHighPer()) {
                 return 1;
             } else {
@@ -75,6 +75,22 @@ public class Floors {
                 return -1;
             } else {
                 return 1;
+            }
+        }*/
+        int high = getHighPer(inout);
+        int low = getLowPer(inout);
+        if (nowFloor < low) {
+            return 1;
+        }
+        else if (nowFloor > high) {
+            return -1;
+        }
+        else {
+            if (nowFloor - low > high - nowFloor) {
+                return 1;
+            }
+            else {
+                return -1;
             }
         }
     }
@@ -88,8 +104,9 @@ public class Floors {
         return floor.ifInPass(direction);
     }
 
-    public synchronized ArrayList<Person> inPass(int nowFloor,int direction,int num,HashSet<Integer> Inout) {
-        return floors.get(nowFloor - 1).inPass(direction,num,nowFloor,Inout);
+    public synchronized ArrayList<Person> inPass(int nowFloor,
+                                                 int direction,int num,HashSet<Integer> inout) {
+        return floors.get(nowFloor - 1).inPass(direction,num,nowFloor,inout);
     }
 
     public void setEmpty(int empty) {
@@ -111,9 +128,9 @@ public class Floors {
         }
     }
 
-    public synchronized boolean ifGo(HashSet<Integer> Inout) {
+    public synchronized boolean ifGo(HashSet<Integer> inout) {
         for (Floor floor : floors) {
-            if (floor.ifGo(Inout)) {
+            if (floor.ifGo(inout)) {
                 //System.out.println(i);
                 return true;
             }
@@ -121,13 +138,41 @@ public class Floors {
         return false;
     }
 
-    public synchronized boolean CanWait(HashSet<Integer> Inout) {
+    public synchronized boolean CanWait(HashSet<Integer> inout) {
         for (Floor floor :floors) {
-            if (floor.CanWait(Inout)) {
+            if (floor.CanWait(inout)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean NotStop(int nowFloor,HashSet<Integer> inout) {
+        if (isThisEmpty(nowFloor) || !inout.contains(nowFloor)) {
+            return true;
+        }
+        else if (nowFloor == 4 || nowFloor == 18) {
+            return !floors.get(nowFloor - 1).CanWait(inout);
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int changeDir(int direction,int nowFloor,HashSet<Integer> inout) {
+        if (direction == 1) {
+            if (nowFloor < getHighPer(inout)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            if (nowFloor > getLowPer(inout)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
     }
 
 }

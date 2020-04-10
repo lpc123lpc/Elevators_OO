@@ -1,4 +1,7 @@
-import com.oocourse.elevator3.*;
+import com.oocourse.elevator3.ElevatorRequest;
+import com.oocourse.elevator3.PersonRequest;
+import com.oocourse.elevator3.ElevatorInput;
+import com.oocourse.elevator3.Request;
 
 import java.io.IOException;
 

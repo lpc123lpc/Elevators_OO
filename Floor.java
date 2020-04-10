@@ -11,7 +11,7 @@ public class Floor {
         people.add(person);
     }
 
-    public  ArrayList<Person> getPeople(int nowFloor,int num,HashSet<Integer> Inout) {
+    public  ArrayList<Person> getPeople(int nowFloor,int num,HashSet<Integer> inout) {
         int min = 19;
         Person temp = people.get(0);
         for (Person person : people) {
@@ -22,14 +22,16 @@ public class Floor {
             }
         }
         int dir = temp.getDirection();
-        return inPass(dir,num,nowFloor,Inout);
+        return inPass(dir,num,nowFloor,inout);
     }
 
     public boolean isEmpty() {
         return people.size() == 0;
     }
 
-    public synchronized ArrayList<Person> inPass(int direction,int num,int nowFloor,HashSet<Integer> Inout) {
+    public synchronized ArrayList<Person> inPass(int direction,
+                                                 int num,int nowFloor,
+                                                 HashSet<Integer> inout) {
         int count = 0;
         ArrayList<Person> in = new ArrayList<>();
         for (Person person: people) {
@@ -38,10 +40,10 @@ public class Floor {
                     break;
                 }
                 else {
-                    if (nowFloor == 4 ||nowFloor == 18) {
-                        if (Inout.contains(person.getToFloor())) {
+                    if (nowFloor == 4 || nowFloor == 18) {
+                        if (inout.contains(person.getToFloor())) {
                             in.add(person);
-                            count ++;
+                            count++;
                         }
                     }
                     else {
@@ -64,15 +66,15 @@ public class Floor {
         return false;
     }
 
-    public synchronized boolean ifGo(HashSet<Integer> Inout) {
+    public synchronized boolean ifGo(HashSet<Integer> inout) {
         for (Person person : people) {
             int from;
             int to;
             from = person.getFromFloor();
-            if (Inout.contains(from)){
+            if (inout.contains(from)) {
                 if (from == 4 || from == 18) {
                     to = person.getToFloor();
-                    if (Inout.contains(to)) {
+                    if (inout.contains(to)) {
                         return true;
                     }
                 }
@@ -84,13 +86,13 @@ public class Floor {
         return false;
     }
 
-
-    public boolean CanWait (HashSet<Integer> Inout) {
+    public boolean CanWait(HashSet<Integer> inout) {
         for (Person person :people) {
-            if (Inout.contains(person.getToFloor())){
+            if (inout.contains(person.getToFloor())) {
                 return true;
             }
         }
         return false;
     }
+
 }
