@@ -109,7 +109,7 @@ public class Floors {
         return floors.get(nowFloor - 1).inPass(direction,num,nowFloor,inout);
     }
 
-    public void setEmpty(int empty) {
+    public synchronized void setEmpty(int empty) {
         this.empty = empty;
     }
 
