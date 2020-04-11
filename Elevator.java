@@ -42,11 +42,12 @@ public class Elevator extends Thread {
         TimableOutput.initStartTimestamp();
         while (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
             //System.out.println(ifStop()+name);
-            if (ifStop()) {
+            /*if (ifStop()) {
                 break;
+            }*/
+            if (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
+                ifWait();
             }
-            //ifWait();
-
             while (!floors.isEmpty()) {
                 if (ifStop()) {
                     break;
@@ -198,7 +199,7 @@ public class Elevator extends Thread {
             return false;
         }
         else if (floors.isEmpty()) {
-            //System.out.println(2);
+            System.out.println(2);
             return true;
         }
         else {
