@@ -7,11 +7,11 @@ public class Floor {
     Floor() {
     }
 
-    public void addPerson(Person person) {
+    public synchronized void addPerson(Person person) {
         people.add(person);
     }
 
-    public  ArrayList<Person> getPeople(int nowFloor,int num,HashSet<Integer> inout) {
+    public  synchronized ArrayList<Person> getPeople(int nowFloor,int num,HashSet<Integer> inout) {
         int min = 19;
         Person temp = people.get(0);
         for (Person person : people) {
@@ -25,7 +25,7 @@ public class Floor {
         return inPass(dir,num,nowFloor,inout);
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return people.size() == 0;
     }
 
@@ -86,7 +86,7 @@ public class Floor {
         return false;
     }
 
-    public boolean CanWait(HashSet<Integer> inout) {
+    public synchronized boolean CanWait(HashSet<Integer> inout) {
         for (Person person :people) {
             if (inout.contains(person.getToFloor())) {
                 return true;
