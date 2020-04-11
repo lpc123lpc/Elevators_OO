@@ -41,15 +41,13 @@ public class Elevator extends Thread {
     public void run() {
         TimableOutput.initStartTimestamp();
         while (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
-            //System.out.println(ifStop()+name);
+            //System.out.println(ifStop() + name);
             if (ifStop()) {
                 break;
             }
-            if (floors.getEmpty() == 0 || !floors.isEmpty() || !elevators.isEmpty()) {
-                ifWait();
-            }
+            ifWait();
             while (!floors.isEmpty()) {
-                if (ifStop()) {
+                if (!floors.ifGo(inout)) {
                     break;
                 }
                 if (in.isEmpty()) {
@@ -213,6 +211,9 @@ public class Elevator extends Thread {
     }
 
     public void ifWait() {
+        if (!floors.isEmpty() && floors.ifGo(inout)) {
+            return;
+        }
         while ((!floors.isEmpty() && !floors.ifGo(inout)) ||
                 !elevators.isEmpty() || (floors.isEmpty() && floors.getEmpty() == 0)) {
             //System.out.println((!floors.isEmpty() && !floors.ifGo(inout)));

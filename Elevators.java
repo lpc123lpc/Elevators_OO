@@ -24,9 +24,7 @@ public class Elevators {
         elevators.add(new Elevator(floors,elevatorRequest.getElevatorType()
                 ,elevatorRequest.getElevatorId(),this));
         elevators.get(elevators.size() - 1).start();
-        synchronized (this.floors) {
-            this.floors.notifyAll();
-        }
+
     }
 
     public synchronized boolean isEmpty() {

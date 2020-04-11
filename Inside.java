@@ -7,7 +7,7 @@ public class Inside {
 
     private ArrayList<Person> insidePeople = new ArrayList<>();
     private int num = 0;
-    private Floors floors;
+    private final Floors floors;
 
     Inside(Floors floors) {
         this.floors = floors;
@@ -47,6 +47,9 @@ public class Inside {
         insidePeople.removeAll(out);
         if (nowFloor == 4 || nowFloor == 18) {
             changeEle(inout,nowFloor,name);
+        }
+        synchronized (floors) {
+            floors.notifyAll();
         }
     }
 
@@ -91,5 +94,6 @@ public class Inside {
                     trueFloor(nowFloor),name));
             floors.addPerson(person);
         }
+
     }
 }

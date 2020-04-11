@@ -37,11 +37,12 @@ public class Input extends Thread {
                     Person person = new Person(personRequest.getPersonId(),
                             personRequest.getFromFloor(),personRequest.getToFloor());
                     floors.addPerson(person);
+                    //System.out.println(personRequest);
 
                 }
                 else if (request instanceof ElevatorRequest) {
                     ElevatorRequest elevatorRequest = (ElevatorRequest)request;
-                    //elevators.addElevator(elevatorRequest,floors);
+                    elevators.addElevator(elevatorRequest,floors);
 
                 }
             }
