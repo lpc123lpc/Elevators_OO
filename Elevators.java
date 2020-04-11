@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Elevators {
     private ArrayList<Elevator> elevators = new ArrayList<>();
+    private final Floors floors;
 
     Elevators(Floors floors) {
         for (int i = 0;i < 3;i++) {
             elevators.add(new Elevator(floors,String.valueOf((char)('A' + i)),
                     String.valueOf((char)('A' + i)),this));
         }
+        this.floors = floors;
     }
 
     public void start() {
@@ -22,6 +24,9 @@ public class Elevators {
         elevators.add(new Elevator(floors,elevatorRequest.getElevatorType()
                 ,elevatorRequest.getElevatorId(),this));
         elevators.get(elevators.size() - 1).start();
+        synchronized (this.floors) {
+            this.floors.notifyAll();
+        }
     }
 
     public synchronized boolean isEmpty() {
