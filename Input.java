@@ -6,7 +6,7 @@ import com.oocourse.elevator3.Request;
 import java.io.IOException;
 
 public class Input extends Thread {
-    private Floors floors;
+    private final Floors floors;
     private ElevatorInput elevatorInput;
     private Elevators elevators;
 
@@ -18,6 +18,8 @@ public class Input extends Thread {
 
     @Override
     public void run() {
+        //int[] x = {1000,1300,1000,300,800};
+        //int i =0;
         while (true) {
             Request request = elevatorInput.nextRequest();
             if (request == null) {
@@ -29,10 +31,17 @@ public class Input extends Thread {
                     Person person = new Person(personRequest.getPersonId(),
                             personRequest.getFromFloor(),personRequest.getToFloor());
                     floors.addPerson(person);
+                    /*try{
+                        Thread.sleep(x[i]);
+                        i++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }*/
                 }
                 else if (request instanceof ElevatorRequest) {
                     ElevatorRequest elevatorRequest = (ElevatorRequest)request;
                     elevators.addElevator(elevatorRequest,floors);
+
                 }
             }
         }
@@ -42,6 +51,9 @@ public class Input extends Thread {
             e.printStackTrace();
         }
         floors.setEmpty(1);
+        synchronized (floors) {
+            floors.notifyAll();
+        }
     }
 
 }

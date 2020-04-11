@@ -13,7 +13,7 @@ public class Inside {
         this.floors = floors;
     }
 
-    public void addPerson(ArrayList<Person> people,int nowFloor,String name) {
+    public synchronized void addPerson(ArrayList<Person> people,int nowFloor,String name) {
         try {
             for (Person person : people) {
                 TimableOutput.println(String.format("IN-%d-%d-%s",person.getId(),nowFloor,name));
@@ -26,15 +26,15 @@ public class Inside {
 
     }
 
-    public int getDirection() {
+    public synchronized int getDirection() {
         return insidePeople.get(0).getDirection();
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return insidePeople.size() == 0;
     }
 
-    public void getOut(int nowFloor,String name,HashSet<Integer> inout) {
+    public synchronized void getOut(int nowFloor,String name,HashSet<Integer> inout) {
         ArrayList<Person> out = new ArrayList<>();
         for (Person person : insidePeople) {
             if (person.getToFloor() == nowFloor) {
@@ -50,7 +50,7 @@ public class Inside {
         }
     }
 
-    public boolean ifStop(int nowFloor,HashSet<Integer> inout) {
+    public synchronized boolean ifStop(int nowFloor,HashSet<Integer> inout) {
         for (Person person : insidePeople) {
             if (person.getToFloor() == nowFloor) {
                 return true;
@@ -77,7 +77,7 @@ public class Inside {
         return num;
     }
 
-    public void changeEle(HashSet<Integer> inout,int nowFloor,String name) {
+    public synchronized void changeEle(HashSet<Integer> inout,int nowFloor,String name) {
         ArrayList<Person> out = new ArrayList<>();
         for (Person person :insidePeople) {
             if (!inout.contains(person.getToFloor())) {

@@ -199,10 +199,11 @@ public class Elevator extends Thread {
             return false;
         }
         else if (floors.isEmpty()) {
+            //System.out.println(2);
             return true;
         }
         else {
-            //System.out.println("2" + floors.isEmpty());
+            //System.out.println("3" + floors.isEmpty());
             return  !floors.ifGo(inout) && !floors.CanWait(inout);
         }
     }
@@ -214,6 +215,9 @@ public class Elevator extends Thread {
     public void ifWait() {
         while ((!floors.isEmpty() && !floors.ifGo(inout)) ||
                 !elevators.isEmpty() || (floors.isEmpty() && floors.getEmpty() == 0)) {
+            //System.out.println((!floors.isEmpty() && !floors.ifGo(inout)));
+            //System.out.println(!elevators.isEmpty());
+            //System.out.println((floors.isEmpty() && floors.getEmpty() == 0));
             synchronized (floors) {
                 try {
                     //System.out.println(Thread.currentThread() + "wait"+name);
