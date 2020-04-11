@@ -45,7 +45,7 @@ public class Elevator extends Thread {
             if (ifStop()) {
                 break;
             }
-            ifWait();
+            //ifWait();
 
             while (!floors.isEmpty()) {
                 if (ifStop()) {

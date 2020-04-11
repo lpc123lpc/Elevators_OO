@@ -18,7 +18,7 @@ public class Floors {
     public synchronized void  addPerson(Person person) {
         floors.get(person.getFromFloor() - 1).addPerson(person);
         //System.out.println("notifyAll");
-        notifyAll();
+        this.notifyAll();
     }
 
     public synchronized boolean isEmpty() {
