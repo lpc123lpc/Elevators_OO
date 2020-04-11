@@ -18,13 +18,13 @@ public class Elevators {
         }
     }
 
-    public void addElevator(ElevatorRequest elevatorRequest,Floors floors) {
+    public synchronized void addElevator(ElevatorRequest elevatorRequest,Floors floors) {
         elevators.add(new Elevator(floors,elevatorRequest.getElevatorType()
                 ,elevatorRequest.getElevatorId(),this));
         elevators.get(elevators.size() - 1).start();
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         for (Elevator elevator : elevators) {
             if (!elevator.isEmpty()) {
                 return false;

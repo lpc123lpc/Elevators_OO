@@ -208,7 +208,7 @@ public class Elevator extends Thread {
         }
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return in.isEmpty();
     }
 
